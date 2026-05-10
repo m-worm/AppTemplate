@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AppTemplate.ViewModels"
+             x:Class="AppTemplate.Views.HomeView"
+             x:DataType="vm:HomeViewModel">
+
+  <ScrollViewer>
+    <StackPanel Margin="40,40,40,40" Spacing="16" MaxWidth="700"
+                HorizontalAlignment="Left" VerticalAlignment="Top">
+
+      <TextBlock Text="Welcome to AppTemplate"
+                 Theme="{StaticResource TitleTextBlockStyle}"
+                 TextWrapping="Wrap" />
+
+      <TextBlock TextWrapping="Wrap" Opacity="0.7"
+                 Text="This template provides a ready-to-use foundation for Avalonia 12 desktop and WASM applications using the Fluent design system." />
+
+      <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,8" />
+
+      <TextBlock Text="What's included" Theme="{StaticResource SubtitleTextBlockStyle}" />
+
+      <StackPanel Spacing="8">
+        <TextBlock Text="✦  Collapsible NavigationView shell with hamburger toggle" />
+        <TextBlock Text="✦  Light / Dark / Auto theme switching (persisted)" />
+        <TextBlock Text="✦  IsolatedStorage settings persistence" />
+        <TextBlock Text="✦  Window size and position persistence" />
+        <TextBlock Text="✦  MVVM navigation — ViewModel switching, no Frame" />
+        <TextBlock Text="✦  Global exception handler with NLog file logging" />
+        <TextBlock Text="✦  Microsoft.Extensions DI and logging abstractions" />
+        <TextBlock Text="✦  HelloWorld page demonstrating ContentDialog" />
+      </StackPanel>
+
+      <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,8" />
+
+      <TextBlock Text="Getting started" Theme="{StaticResource SubtitleTextBlockStyle}" />
+      <TextBlock TextWrapping="Wrap" Opacity="0.7"
+                 Text="Add your pages in Views/, pair each with a ViewModel in ViewModels/, then register them in App.axaml.cs. The ViewLocator wires them together automatically." />
+
+    </StackPanel>
+  </ScrollViewer>
+
+</UserControl>

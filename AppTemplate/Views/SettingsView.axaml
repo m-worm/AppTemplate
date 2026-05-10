@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AppTemplate.ViewModels"
+             x:Class="AppTemplate.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+  <ScrollViewer>
+    <StackPanel Margin="40,40,40,40" Spacing="24" MaxWidth="560"
+                HorizontalAlignment="Left" VerticalAlignment="Top">
+
+      <TextBlock Text="Settings"
+                 Theme="{StaticResource TitleTextBlockStyle}" />
+
+      <!-- Theme -->
+      <StackPanel Spacing="12">
+        <TextBlock Text="Appearance" Theme="{StaticResource SubtitleTextBlockStyle}" />
+        <TextBlock Text="Choose how AppTemplate looks. Auto follows your system setting."
+                   Opacity="0.7" TextWrapping="Wrap" />
+
+        <StackPanel Spacing="8" Margin="0,4,0,0">
+          <RadioButton Content="Light"
+                       IsChecked="{Binding IsLightTheme, Mode=TwoWay}"
+                       GroupName="Theme" />
+          <RadioButton Content="Dark"
+                       IsChecked="{Binding IsDarkTheme, Mode=TwoWay}"
+                       GroupName="Theme" />
+          <RadioButton Content="Auto (follow system)"
+                       IsChecked="{Binding IsAutoTheme, Mode=TwoWay}"
+                       GroupName="Theme" />
+        </StackPanel>
+      </StackPanel>
+
+      <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" />
+
+      <!-- Accent colour -->
+      <StackPanel Spacing="12">
+        <TextBlock Text="Accent color" Theme="{StaticResource SubtitleTextBlockStyle}" />
+        <TextBlock TextWrapping="Wrap" Opacity="0.7"
+                   Text="The accent color is used for buttons, selections, and highlights throughout the app." />
+
+        <ToggleSwitch IsChecked="{Binding UseSystemAccentColor, Mode=TwoWay}"
+                      OnContent="System" OffContent="Custom"
+                      Content="Use Windows system accent color" />
+
+        <StackPanel Spacing="8" IsEnabled="{Binding IsCustomAccentEnabled}">
+          <TextBlock Text="Custom color" Opacity="0.7" />
+          <ColorPicker Color="{Binding CustomAccentColor, Mode=TwoWay}"
+                       HorizontalAlignment="Left" />
+        </StackPanel>
+      </StackPanel>
+
+      <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" />
+
+      <!-- About -->
+      <StackPanel Spacing="12">
+        <TextBlock Text="About" Theme="{StaticResource SubtitleTextBlockStyle}" />
+        <Grid ColumnDefinitions="Auto,16,*" RowDefinitions="Auto,8,Auto" Opacity="0.7">
+          <TextBlock Grid.Row="0" Grid.Column="0" Text="Application" />
+          <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding AppName}" />
+          <TextBlock Grid.Row="2" Grid.Column="0" Text="Version" />
+          <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding AppVersion}" />
+        </Grid>
+      </StackPanel>
+
+    </StackPanel>
+  </ScrollViewer>
+
+</UserControl>

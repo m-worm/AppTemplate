@@ -1,0 +1,11 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="using:AppTemplate.Views"
+        x:Class="AppTemplate.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AppTemplate"
+        Width="1200" Height="800"
+        MinWidth="480" MinHeight="360"
+        WindowStartupLocation="CenterScreen">
+    <views:MainView />
+</Window>

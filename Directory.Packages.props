@@ -1,0 +1,32 @@
+<Project>
+    <!-- https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management -->
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+    <ItemGroup>
+        <!-- Avalonia packages — keep versions in sync -->
+        <PackageVersion Include="Avalonia"                       Version="12.0.0" />
+        <PackageVersion Include="Avalonia.Fonts.Inter"           Version="12.0.0" />
+        <PackageVersion Include="AvaloniaUI.DiagnosticsSupport"  Version="2.2.1" />
+        <PackageVersion Include="Avalonia.Desktop"               Version="12.0.0" />
+        <PackageVersion Include="Avalonia.iOS"                   Version="12.0.0" />
+        <PackageVersion Include="Avalonia.Browser"               Version="12.0.0" />
+        <PackageVersion Include="Avalonia.Android"               Version="12.0.0" />
+
+        <!-- FluentAvalonia — replaces Avalonia.Themes.Fluent; v3 targets Avalonia 12 + .NET 10 -->
+        <PackageVersion Include="FluentAvaloniaUI"               Version="3.0.0-preview2" />
+        <PackageVersion Include="FluentIcons.Avalonia.Fluent"    Version="2.0.325" />
+
+        <!-- MVVM -->
+        <PackageVersion Include="CommunityToolkit.Mvvm"          Version="8.4.0" />
+
+        <!-- DI + Logging -->
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
+        <PackageVersion Include="Microsoft.Extensions.Logging"             Version="10.0.7" />
+        <PackageVersion Include="NLog"                                     Version="6.1.3" />
+        <PackageVersion Include="NLog.Extensions.Logging"                  Version="6.1.3" />
+
+        <!-- Android -->
+        <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,22 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:AppTemplate"
+             xmlns:fav="using:FluentAvalonia.Styling"
+             x:Class="AppTemplate.App"
+             RequestedThemeVariant="Default">
+
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <!-- Override FluentAvalonia's default font (Segoe UI Variable, Windows-only) with
+             Inter so all platforms — including WASM — get consistent, good-looking text. -->
+        <FontFamily x:Key="ContentControlThemeFontFamily">avares://Avalonia.Fonts.Inter/Assets#Inter</FontFamily>
+    </Application.Resources>
+
+    <Application.Styles>
+        <fav:FluentAvaloniaTheme />
+    </Application.Styles>
+
+</Application>

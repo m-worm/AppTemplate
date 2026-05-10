@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AppTemplate.ViewModels"
+             x:Class="AppTemplate.Views.HelloWorldView"
+             x:DataType="vm:HelloWorldViewModel">
+
+  <ScrollViewer>
+    <StackPanel Margin="40,40,40,40" Spacing="24" MaxWidth="480"
+                HorizontalAlignment="Left" VerticalAlignment="Top">
+
+      <TextBlock Text="Hello World"
+                 Theme="{StaticResource TitleTextBlockStyle}" />
+
+      <TextBlock TextWrapping="Wrap" Opacity="0.7"
+                 Text="Enter your name below and press the button to receive a personalised greeting." />
+
+      <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" />
+
+      <StackPanel Spacing="8">
+        <TextBlock Text="Name:" />
+        <TextBox Text="{Binding Name}"
+                 PlaceholderText="Enter your name…"
+                 Width="320"
+                 HorizontalAlignment="Left" />
+      </StackPanel>
+
+      <Button Content="Say Hello!"
+              Command="{Binding SayHelloCommand}"
+              HorizontalAlignment="Left" />
+
+    </StackPanel>
+  </ScrollViewer>
+
+</UserControl>
