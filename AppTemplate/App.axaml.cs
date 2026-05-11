@@ -18,32 +18,70 @@ public partial class App : Application
 
     public App()
     {
-        // Wire exception handlers before anything else so startup crashes are captured
-        AppDomain.CurrentDomain.UnhandledException += OnDomainException;
-        TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
+        // AppDomain and TaskScheduler global handlers are not supported in browser WASM
+        if (!OperatingSystem.IsBrowser())
+        {
+            AppDomain.CurrentDomain.UnhandledException += OnDomainException;
+            TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
+        }
     }
 
     public override void Initialize()
     {
-        LogManager.Setup().LoadConfigurationFromFile("Assets/nlog.config");
+        try
+        {
+            InitializeCore();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("[APP INIT FAILED] " + ex.GetType().FullName + ": " + ex.Message);
+            if (ex.InnerException != null)
+                Console.Error.WriteLine("[INNER] " + ex.InnerException.GetType().FullName + ": " + ex.InnerException.Message);
+            throw;
+        }
+    }
+
+    private void InitializeCore()
+    {
+        if (OperatingSystem.IsBrowser())
+        {
+            var config = new NLog.Config.LoggingConfiguration();
+            var consoleTarget = new NLog.Targets.ConsoleTarget("console")
+            {
+                Layout = "${time} [${level:uppercase=true:padding=-5}] ${logger:shortName=true} — ${message} ${exception:format=type,message}"
+            };
+            config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, consoleTarget);
+            LogManager.Configuration = config;
+        }
+        else
+            LogManager.Setup().LoadConfigurationFromFile("Assets/nlog.config");
 
         var sc = new ServiceCollection();
-        ConfigureServices(sc);
+        ConfigureServices(sc, OperatingSystem.IsBrowser());
         _services = sc.BuildServiceProvider();
         _logger   = _services.GetRequiredService<ILogger<App>>();
 
         var version = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version?.ToString(3) ?? "1.0.0";
-        _logger.LogInformation("Starting | Version={Version} Platform={Platform} OS={OS}",
+        _logger.LogInformation("Starting | Version={Version} Platform={Platform}",
             version,
-            OperatingSystem.IsBrowser() ? "Browser" : "Desktop",
-            Environment.OSVersion);
+            OperatingSystem.IsBrowser() ? "Browser" : "Desktop");
 
         AvaloniaXamlLoader.Load(this);
 
-        // Run LoadAsync on a thread-pool thread to avoid deadlocking Avalonia's
-        // SynchronizationContext when called synchronously during Initialize().
-        var settings = _services.GetRequiredService<ISettingsService>();
-        Task.Run(() => settings.LoadAsync()).GetAwaiter().GetResult();
+        // Load settings - skip sync wait in browser to avoid hangs
+        if (!OperatingSystem.IsBrowser())
+        {
+            var settings = _services.GetRequiredService<ISettingsService>();
+            try
+            {
+                settings.LoadAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogWarning(ex, "Failed to load settings during initialization");
+            }
+        }
+
         var themeService = _services.GetRequiredService<IThemeService>();
         themeService.ApplyCurrentTheme();
         themeService.ApplyAccentColor();
@@ -71,7 +109,7 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    private static void ConfigureServices(IServiceCollection services)
+    private static void ConfigureServices(IServiceCollection services, bool isBrowser)
     {
         // Logging
         services.AddLogging(b =>
@@ -85,7 +123,8 @@ public partial class App : Application
         services.AddSingleton<ISettingsService,    SettingsService>();
         services.AddSingleton<IThemeService,        ThemeService>();
         services.AddSingleton<INavigationService,   NavigationService>();
-        services.AddSingleton<IWindowStateService,  WindowStateService>();
+        if (!isBrowser)
+            services.AddSingleton<IWindowStateService, WindowStateService>();
 
         // ViewModels — singletons so state is preserved across navigation
         services.AddSingleton<MainViewModel>();
